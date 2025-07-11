@@ -3,20 +3,20 @@ const cors = require("cors");
 const { educationHistory, skills, projects } = require("./data");
 
 const app = express();
-const PORT = 3000;
 
 app.use(cors());
-// Tambahkan ini di index.js setelah app.use(cors())
-app.get('/', (req, res) => {
-    res.send('Backend API is running...');
-  });
-  
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Backend API is running...");
+});
 
 app.get("/api/education", (req, res) => res.json(educationHistory));
 app.get("/api/skills", (req, res) => res.json(skills));
 app.get("/api/projects", (req, res) => res.json(projects));
 
-app.listen(PORT, () => {
-    console.log(` Server backend berjalan di http://localhost:${PORT}`);
-});
+// Export untuk Vercel handler (tanpa app.listen)
+module.exports = app;
+module.exports = (req, res) => {
+  app(req, res);
+};
